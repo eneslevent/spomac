@@ -1,0 +1,37 @@
+project_name: spomac
+
+before:
+  hooks:
+    - go mod tidy
+
+builds:
+  - main: .
+    binary: spomac
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    ldflags:
+      - -s -w -X main.version={{.Version}}
+
+archives:
+  - format: tar.gz
+    name_template: "{{ .ProjectName }}_{{ .Os }}_{{ .Arch }}"
+
+brews:
+  - repository:
+      owner: eneslevent
+      name: homebrew-tap
+    homepage: https://github.com/eneslevent/spomac
+    description: Lightweight Spotify controller for macOS terminal
+    license: MIT
+    install: |
+      bin.install "spomac"
+
+changelog:
+  sort: asc
+  filters:
+    exclude:
+      - "^docs:"
+      - "^test:"
